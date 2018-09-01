@@ -11,7 +11,7 @@ application {
 }
 
 group = "com.raycoarana"
-version = "0.1"
+version = "1.0"
 
 repositories {
     mavenCentral()
