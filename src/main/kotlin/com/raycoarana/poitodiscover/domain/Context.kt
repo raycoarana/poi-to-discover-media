@@ -10,7 +10,8 @@ class Context(
         val name: String,
         val displayName: String,
         val date: String,
-        val hashBlockSize: Int
+        val hashBlockSize: Int,
+        val ignoreCategories: List<PoiType>
 ) {
     val inputFile = File(inputFileName)
     val outputFolder = Folder(outputFolderName)

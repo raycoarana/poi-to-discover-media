@@ -13,6 +13,7 @@ class ConsolidateTask @Inject constructor(private val logger: Logger) : Task {
     override fun execute(context: Context) {
         val groupByType = context.rawPois.groupBy { it.type }.toMutableMap()
 
+        context.ignoreCategories.forEach { groupByType.remove(it) }
         groupByType.remove(PoiType.Unknown)
 
         logger.info("POIs after consolidating")
