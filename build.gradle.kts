@@ -1,8 +1,13 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
+    application
     kotlin("jvm") version "1.2.61"
     id("org.jetbrains.kotlin.kapt") version "1.2.61"
+}
+
+application {
+    mainClassName = "com.raycoarana.poitodiscover.PoiToDiscoverMediaKt"
 }
 
 group = "com.raycoarana"
