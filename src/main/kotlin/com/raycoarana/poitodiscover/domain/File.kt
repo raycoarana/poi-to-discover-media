@@ -1,10 +1,8 @@
 package com.raycoarana.poitodiscover.domain
 
 import com.raycoarana.poitodiscover.core.sha1
-import java.io.FileInputStream
-import java.io.OutputStream
-import java.io.Reader
-import java.io.Writer
+import java.io.*
+import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 import java.io.File as JavaFile
 
@@ -22,6 +20,7 @@ class File constructor(private val javaFile: JavaFile) {
 
     fun utf8Reader(): Reader = javaFile.reader(Charsets.UTF_8)
     fun utf8Writer(): Writer = javaFile.writer(Charsets.UTF_8)
+    fun inputStream(): InputStream = javaFile.inputStream()
     fun outputStream(): OutputStream = javaFile.outputStream()
     fun sha1(blockSize: Int): List<String> = FileInputStream(javaFile).sha1(blockSize)
     fun length(): Long = javaFile.length()

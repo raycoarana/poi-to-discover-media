@@ -16,7 +16,8 @@ class TasksProvider @Inject constructor(
         private val generateMib2DeFolderStructureTaskProvider: Provider<GenerateMib2DeFolderStructureTask>,
         private val generateMib2DeMetadataTaskProvider: Provider<GenerateMib2DeMetadataTask>,
         private val generateMetadataTaskProvider: Provider<GenerateMetadataTask>,
-        private val cleanUpTaskProvider: Provider<CleanUpTask>
+        private val cleanUpTaskProvider: Provider<CleanUpTask>,
+        private val releaseTaskProvider: Provider<ReleaseTask>
 ) {
     fun get(): List<Task> =
             listOf(
@@ -31,6 +32,7 @@ class TasksProvider @Inject constructor(
                     generateMib2DeFolderStructureTaskProvider.get(),
                     generateMib2DeMetadataTaskProvider.get(),
                     generateMetadataTaskProvider.get(),
-                    cleanUpTaskProvider.get()
+                    cleanUpTaskProvider.get(),
+                    releaseTaskProvider.get()
             )
 }
