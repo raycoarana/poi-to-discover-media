@@ -7,8 +7,6 @@ import java.util.*
 
 const val ARG_INPUT = "input"
 const val ARG_OUTPUT = "output"
-const val ARG_NAME = "name"
-const val ARG_DISPLAY_NAME = "displayName"
 const val ARG_DATE = "date"
 const val ARG_HASH_BLOCK_SIZE = "hashBlockSize"
 const val ARG_LANGUAGE = "lang"
@@ -18,8 +16,6 @@ const val DEFAULT_HASH_BLOCK_SIZE = 524288
 val argDefaults = mapOf(
         ARG_INPUT to "",
         ARG_OUTPUT to "./output",
-        ARG_NAME to "Personal POI",
-        ARG_DISPLAY_NAME to "Personal POIs",
         ARG_DATE to SimpleDateFormat("YYYY-MM-dd").format(Date()),
         ARG_HASH_BLOCK_SIZE to DEFAULT_HASH_BLOCK_SIZE.toString(),
         ARG_LANGUAGE to "es_ES"
@@ -31,7 +27,7 @@ fun main(args: Array<String>) {
         return
     }
 
-    val argumentMap = argDefaults.toMutableMap();
+    val argumentMap = argDefaults.toMutableMap()
     args.forEach {
         val (key, value) = it.split("=")
         argumentMap[key] = value
@@ -40,8 +36,8 @@ fun main(args: Array<String>) {
     val inputFileName = argumentMap[ARG_INPUT]!!
     val outputFolderName = argumentMap[ARG_OUTPUT]!!
     val (language, country) = argumentMap[ARG_LANGUAGE]!!.split("_")
-    val name = argumentMap[ARG_NAME]!!
-    val displayName = argumentMap[ARG_DISPLAY_NAME]!!
+    val name = "Personal POI"
+    val displayName = "Personal POIs"
     val date = argumentMap[ARG_DATE]!!
     val hashBlockSize: Int = argumentMap[ARG_HASH_BLOCK_SIZE]!!.toIntOrNull() ?: DEFAULT_HASH_BLOCK_SIZE
 
@@ -73,8 +69,6 @@ fun printHelp() {
     println()
     println("\tinput=[pathToInputZipFile]")
     println("\toutput=[pathToOutput]\t(Default: ./output)")
-    println("\tname=[nameOfPois]\t(Default: Personal POI)")
-    println("\tdisplayName=[displayNameOfPois]\t(Default: Personal POIs)")
     println("\tlang=[languageIsoCode]\t(Default: es_ES)")
     println("\tdate=[dateOfPois]\t(Default: YYYY-MM-DD)")
     println("\thashBlockSize=[sizeOfChecksum]\t(Default: 524288)")
