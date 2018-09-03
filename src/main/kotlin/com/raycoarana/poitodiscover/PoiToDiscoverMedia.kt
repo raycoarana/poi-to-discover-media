@@ -36,7 +36,7 @@ fun main(args: Array<String>) {
         argumentMap[key] = value
     }
 
-    val inputFileName = argumentMap[ARG_INPUT]!!
+    val inputFileName = argumentMap[ARG_INPUT]!!.split(",")
     val outputFolderName = argumentMap[ARG_OUTPUT]!!
     val (language, country) = argumentMap[ARG_LANGUAGE]!!.split("_")
     val name = "Personal POI"
@@ -78,7 +78,7 @@ fun printHelp() {
     println()
     println("Usage:")
     println()
-    println("\tinput=[pathToInputZipFile]")
+    println("\tinput=[listOfPathToInputZipFiles]\t(Ex: input=File1.zip,File2.zip)")
     println("\toutput=[pathToOutput]\t(Default: ./output)")
     println("\tlang=[languageIsoCode]\t(Default: es_ES)")
     println("\tdate=[dateOfPois]\t(Default: YYYY-MM-DD)")
@@ -94,7 +94,7 @@ fun printHelp() {
     println("\t- Fixed")
     println("\t- Photo")
     println("\t- Semaphores")
-    println("\t- SectionFinal")
+    println("\t- SectionEnd")
     println("\t- SectionStart")
     println("\t- Tunnel")
     println()

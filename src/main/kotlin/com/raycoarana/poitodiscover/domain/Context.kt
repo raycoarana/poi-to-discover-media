@@ -4,7 +4,7 @@ import com.raycoarana.poitodiscover.generator.IconsGenerator
 import java.util.*
 
 class Context(
-        inputFileName: String,
+        inputFileName: List<String>,
         outputFolderName: String,
         val locale: Locale,
         val name: String,
@@ -13,7 +13,7 @@ class Context(
         val hashBlockSize: Int,
         val ignoreCategories: List<PoiType>
 ) {
-    val inputFile = File(inputFileName)
+    val inputFiles = inputFileName.map { File(it) }
     val outputFolder = Folder(outputFolderName)
     val nameWithoutSpaces: String = name.replace(" ", "")
 
@@ -22,7 +22,6 @@ class Context(
     lateinit var poiByType: Map<PoiType, List<Poi>>
 
     // Workplace folders
-    lateinit var inputFolder: Folder
     lateinit var radarPoisFolder: Folder
     lateinit var mib2HighFolder: Folder
     lateinit var mib2HighInfoFileFolder: Folder

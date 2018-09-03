@@ -6,6 +6,6 @@ import javax.inject.Inject
 
 class CleanUpTask @Inject constructor() : Task {
     override fun execute(context: Context) {
-        context.inputFolder.delete()
+        //Nothing by now!
     }
 }

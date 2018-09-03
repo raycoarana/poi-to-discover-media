@@ -8,13 +8,9 @@ import com.raycoarana.poitodiscover.domain.PoiType
 import org.slf4j.Logger
 import javax.inject.Inject
 
-/**
- * Read POIs from Garmin Speed 2xx-12xx-13xx-14xx-2xxx-3xxx
- */
-class ImportFromGarminSpeed @Inject constructor(private val logger: Logger) : Importer {
+class ImportFromLufopGarminEuSpeed @Inject constructor(private val logger: Logger) : Importer {
     override fun execute(inputFolder: Folder): List<Poi> {
-        val csvFiles = Folder(inputFolder, GARMIN_CONTENT_FOLDER)
-                .listFiles()
+        val csvFiles = inputFolder.listFiles()
                 .filter { it.extension.toLowerCase() == CSV_EXTENSION }
 
         logger.info("Detected ${csvFiles.size} POI files")
@@ -38,20 +34,17 @@ class ImportFromGarminSpeed @Inject constructor(private val logger: Logger) : Im
 
     private fun String.toPoiType(): PoiType =
             when(this) {
-                "R_BBS_APR" -> PoiType.ResidentialArea
-                in Regex("R_BBS_camu_.+") -> PoiType.Hidden
-                in Regex("R_BBS_fijos_.+") -> PoiType.Fixed
-                in Regex("R_BBS_fijos_.+") -> PoiType.Fixed
-                "R_BBS_Foto" -> PoiType.Photo
-                "R_BBS_semaforos" -> PoiType.Semaphores
-                "R_BBS_tramo_final" -> PoiType.SectionEnd
-                "R_BBS_tramo_inicio" -> PoiType.SectionStart
-                "R_BBS_tunel" -> PoiType.Tunnel
+                in Regex("^((?!ES).)*Mobile.+") -> PoiType.Hidden
+                in Regex("^((?!ES).)*Fixe.+") -> PoiType.Fixed
+                in Regex(".+ZoneFR\\d{2,3}") -> PoiType.Fixed
+                in Regex("^((?!ES).)*FeuRouge.+") -> PoiType.Semaphores
+                in Regex("^((?!ES).)*Tunnel.+") -> PoiType.Tunnel
+                in Regex("^((?!ES).)*TronconDebut.+") -> PoiType.SectionStart
+                in Regex("^((?!ES).)*TronconFin.+") -> PoiType.SectionEnd
                 else -> PoiType.Unknown
             }
 
     companion object {
         const val CSV_EXTENSION = "csv"
-        const val GARMIN_CONTENT_FOLDER = "garminvelocidad 2xx-12xx-13xx-14xx-2xxx-3xxx y posteriores"
     }
 }

@@ -1,8 +1,6 @@
 package com.raycoarana.poitodiscover.pipeline.tasks
 
-import com.raycoarana.poitodiscover.domain.Context
-import com.raycoarana.poitodiscover.domain.SourceType
-import com.raycoarana.poitodiscover.domain.createTempFolder
+import com.raycoarana.poitodiscover.domain.*
 import com.raycoarana.poitodiscover.pipeline.Task
 import com.raycoarana.poitodiscover.pipeline.importer.ImporterFactory
 import javax.inject.Inject
@@ -11,17 +9,28 @@ class ImportTask @Inject constructor(
         private val importerFactory: ImporterFactory
 ) : Task {
     override fun execute(context: Context) {
-        val sourceType = when(context.inputFile.name) {
+        val poiList = ArrayList<Poi>()
+        val inputFolder = createTempFolder()
+        context.inputFiles.forEach {
+            val sourceType = getSourceType(it)
+            it.decompressTo(inputFolder)
+            poiList.addAll(importerFactory.get(sourceType).execute(inputFolder))
+            inputFolder.deleteChilds()
+        }
+        context.rawPois = poiList
+    }
+
+    fun getSourceType(it: File): SourceType {
+        val sourceType = when (it.name) {
             GARMIN_SOURCE -> SourceType.GARMIN_SPEED
+            LUFOP_GARMIN_SOURCE -> SourceType.LUFOP_GARMIN_SOURCE
             else -> throw Exception("Unsupported source file")
         }
-
-        context.inputFolder = createTempFolder()
-        context.inputFile.decompressTo(context.inputFolder)
-        importerFactory.get(sourceType).execute(context)
+        return sourceType
     }
 
     companion object {
         const val GARMIN_SOURCE = "garminvelocidad 2xx-12xx-13xx-14xx-2xxx-3xxx y posteriores.zip"
+        const val LUFOP_GARMIN_SOURCE = "Lufop-Zones-de-danger-EU-CSV.zip"
     }
 }

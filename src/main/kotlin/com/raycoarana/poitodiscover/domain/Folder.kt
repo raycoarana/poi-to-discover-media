@@ -1,6 +1,5 @@
 package com.raycoarana.poitodiscover.domain
 
-import org.slf4j.LoggerFactory
 import java.io.File as JavaFile
 
 class Folder(val javaFile: JavaFile) {
@@ -12,11 +11,7 @@ class Folder(val javaFile: JavaFile) {
     fun mkdirs() = javaFile.mkdirs()
     fun listFiles(): List<File> = javaFile.listFiles().filter { it.isFile }.map { File(it) }
     fun listFolders(): List<Folder> = javaFile.listFiles().filter { it.isDirectory }.map { Folder(it) }
-    fun delete() {
-        if(!javaFile.deleteRecursively()) {
-            LoggerFactory.getLogger(Folder::class.java).info("Error deleting folder: ${this.javaFile.name}")
-        }
-    }
+    fun deleteChilds() = javaFile.listFiles().forEach { it.deleteRecursively() }
 
     fun deleteVisibleChilds() {
         javaFile.listFiles()
