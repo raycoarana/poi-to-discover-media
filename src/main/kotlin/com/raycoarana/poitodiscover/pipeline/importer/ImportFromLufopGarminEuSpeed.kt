@@ -18,18 +18,15 @@ class ImportFromLufopGarminEuSpeed @Inject constructor(private val logger: Logge
         return csvFiles.map {csvFile ->
             val categoryName = csvFile.nameWithoutExtension
             val poiType = categoryName.toPoiType()
-            val pois = CSVReaderBuilder(csvFile.utf8Reader())
+            CSVReaderBuilder(csvFile.utf8Reader())
                     .build()
                     .readAll()
                     .map { csvLine ->
                         val (longitude, latitude, description) = csvLine
                         Poi(latitude, longitude, description, poiType)
                     }
-
-            logger.info("  ${pois.size} of type $categoryName ($poiType)")
-
-            pois
-        }.flatMap { it }
+                    .also { logger.info("  ${it.size} of type $categoryName ($poiType)") }
+        }.flatten()
     }
 
     private fun String.toPoiType(): PoiType =
