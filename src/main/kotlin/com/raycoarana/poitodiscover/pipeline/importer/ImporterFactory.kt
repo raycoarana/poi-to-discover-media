@@ -13,6 +13,5 @@ class ImporterFactory @Inject constructor(
         when(sourceType) {
             SourceType.GARMIN_SPEED -> importFromGarminSpeedProvider.get()
             SourceType.LUFOP_GARMIN_SOURCE -> importFromLufopGarminEuSpeedProvider.get()
-            else -> throw Exception("Not supported sourceType")
         }
 }
