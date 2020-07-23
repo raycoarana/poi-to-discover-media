@@ -2,6 +2,7 @@ package com.raycoarana.poitodiscover.core
 
 import com.raycoarana.poitodiscover.domain.File
 import com.raycoarana.poitodiscover.domain.Folder
+import com.raycoarana.poitodiscover.pipeline.Pipeline
 import java.io.InputStream
 import java.io.Writer
 import java.nio.file.Files
@@ -16,13 +17,13 @@ fun String.asFileIn(folder: Folder): File = File(JavaFile(folder.javaFile, this)
 
 fun JavaFile.setup(): JavaFile {
     this.createNewFile()
-    Files.setPosixFilePermissions(this.toPath(), PosixFilePermissions.fromString("rwxr-xr-x"))
+    //Files.setPosixFilePermissions(this.toPath(), PosixFilePermissions.fromString("rwxr-xr-x"))
     return this
 }
 
 fun String.copyResourceTo(parentFolder: Folder) {
     this.asFileIn(parentFolder).outputStream().use { stream ->
-        javaClass.getResourceAsStream("/$this").copyTo(stream)
+        Pipeline::class.java.getResourceAsStream("/$this").copyTo(stream)
     }
 }
 

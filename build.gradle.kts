@@ -20,6 +20,8 @@ repositories {
 dependencies {
     compile(kotlin("stdlib-jdk8"))
 
+    compile("jakarta.xml.bind:jakarta.xml.bind-api:2.3.2")
+
     //Logs
     compile("org.slf4j:slf4j-api:1.8.0-beta2")
     compile("org.slf4j:slf4j-simple:1.8.0-beta2")

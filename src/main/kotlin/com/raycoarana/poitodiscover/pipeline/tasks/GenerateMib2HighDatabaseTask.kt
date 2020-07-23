@@ -15,6 +15,7 @@ class GenerateMib2HighDatabaseTask @Inject constructor() : Task {
             createStructure(connection)
 
             var rowId = getRowId(connection)
+            connection.autoCommit = false
 
             val poiCoordStatement = connection.prepareStatement("INSERT INTO \"poicoord\" (poiid, latmin, latmax, lonmin, lonmax) VALUES (?, ?, ?, ?, ?)")
             val poiNameStatement = connection.prepareStatement("INSERT INTO \"poiname\" (rowid, name) VALUES (?, ?)")
@@ -44,6 +45,8 @@ class GenerateMib2HighDatabaseTask @Inject constructor() : Task {
                     rowId++
                 }
             }
+
+            connection.commit()
         }
     }
 

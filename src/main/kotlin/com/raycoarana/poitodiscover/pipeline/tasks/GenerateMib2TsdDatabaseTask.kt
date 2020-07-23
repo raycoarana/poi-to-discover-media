@@ -19,6 +19,7 @@ class GenerateMib2TsdDatabaseTask @Inject constructor(
             createStructure(connection, context)
 
             var rowId = getRowId(connection)
+            connection.autoCommit = false
 
             val poiCoordStatement = connection.prepareStatement("INSERT INTO pPoiAddressTable (pPoiId, catId, mortonCode, name) VALUES (?, ?, ?, ?)")
             val poiNameStatement = connection.prepareStatement("INSERT INTO pPoiFtsTable (pPoiId, name) VALUES (?, ?)")
@@ -49,6 +50,8 @@ class GenerateMib2TsdDatabaseTask @Inject constructor(
                     rowId++
                 }
             }
+
+            connection.commit()
         }
     }
 

@@ -9,6 +9,7 @@ enum class PoiType(val highId: Int, val tsdId: Int, val image: String) {
     SectionEnd(5, 2006, "005_image.png"),
     SectionStart(6, 2007, "006_image.png"),
     Tunnel(7, 2008, "007_image.png"),
+    Mercadona(8, 2009, "008_mercadona.png"),
     Unknown(-1, -1, "");
 
     fun getResId() = highId + 1
