@@ -53,7 +53,7 @@ fun main(args: Array<String>) {
 
     val outputFolder = Folder(outputFolderName)
     outputFolder.mkdirs()
-    outputFolder.deleteVisibleChilds()
+    outputFolder.deleteVisibleChildren()
 
     val context = Context(
             inputFileName,

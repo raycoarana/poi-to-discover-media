@@ -5,7 +5,7 @@ import javax.inject.Inject
 import javax.inject.Provider
 
 class ImporterFactory @Inject constructor(
-        private val importFromGarminSpeedProvider: Provider<ImportFromMercadonaGarmin>,
+        private val importFromGarminSpeedProvider: Provider<ImportFromGarminSpeed>,
         private val importFromMercadonaGarminProvider: Provider<ImportFromMercadonaGarmin>,
         private val importFromLufopGarminEuSpeedProvider: Provider<ImportFromLufopGarminEuSpeed>
 ){

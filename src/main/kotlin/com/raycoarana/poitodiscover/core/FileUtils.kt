@@ -5,8 +5,6 @@ import com.raycoarana.poitodiscover.domain.Folder
 import com.raycoarana.poitodiscover.pipeline.Pipeline
 import java.io.InputStream
 import java.io.Writer
-import java.nio.file.Files
-import java.nio.file.attribute.PosixFilePermissions
 import java.security.MessageDigest
 import java.util.*
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter
@@ -17,7 +15,6 @@ fun String.asFileIn(folder: Folder): File = File(JavaFile(folder.javaFile, this)
 
 fun JavaFile.setup(): JavaFile {
     this.createNewFile()
-    //Files.setPosixFilePermissions(this.toPath(), PosixFilePermissions.fromString("rwxr-xr-x"))
     return this
 }
 

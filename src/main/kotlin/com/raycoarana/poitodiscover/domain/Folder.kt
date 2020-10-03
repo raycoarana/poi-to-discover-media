@@ -9,15 +9,26 @@ class Folder(val javaFile: JavaFile) {
     val name: String = javaFile.name
 
     fun mkdirs() = javaFile.mkdirs()
-    fun listFiles(): List<File> = javaFile.listFiles().filter { it.isFile }.map { File(it) }
-    fun listFolders(): List<Folder> = javaFile.listFiles().filter { it.isDirectory }.map { Folder(it) }
-    fun deleteChilds() = javaFile.listFiles().forEach { it.deleteRecursively() }
+    fun listFiles(): List<File> = javaFile.listFilesOrEmpty().filter { it.isFile }.map { File(it) }
 
-    fun deleteVisibleChilds() {
-        javaFile.listFiles()
+    fun listFilesRecursively(): List<File> = javaFile.listFilesOrEmpty().map {
+        if (it.isDirectory) {
+            Folder(it).listFiles()
+        } else {
+            listOf(File(it))
+        }
+    }.flatten()
+
+    fun listFolders(): List<Folder> = javaFile.listFilesOrEmpty().filter { it.isDirectory }.map { Folder(it) }
+    fun deleteChildren() = javaFile.listFilesOrEmpty().forEach { it.deleteRecursively() }
+
+    fun deleteVisibleChildren() {
+        javaFile.listFilesOrEmpty()
                 .filter { !it.isHidden && !it.name.startsWith(".") }
                 .forEach { it.deleteRecursively() }
     }
+
+    private fun JavaFile.listFilesOrEmpty() = listFiles() ?: emptyArray()
 }
 
 fun createTempFolder(): Folder {

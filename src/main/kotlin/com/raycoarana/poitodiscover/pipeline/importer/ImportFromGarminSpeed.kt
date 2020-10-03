@@ -14,7 +14,7 @@ import javax.inject.Inject
 class ImportFromGarminSpeed @Inject constructor(private val logger: Logger) : Importer {
     override fun execute(inputFolder: Folder): List<Poi> {
         val csvFiles = Folder(inputFolder, GARMIN_CONTENT_FOLDER)
-                .listFiles()
+                .listFilesRecursively()
                 .filter { it.extension.toLowerCase() == CSV_EXTENSION }
 
         logger.info("Detected ${csvFiles.size} POI files")

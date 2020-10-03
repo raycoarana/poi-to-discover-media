@@ -12,7 +12,7 @@ import javax.inject.Inject
  */
 class ImportFromMercadonaGarmin @Inject constructor(private val logger: Logger) : Importer {
     override fun execute(inputFolder: Folder): List<Poi> {
-        val csvFiles = inputFolder.listFiles()
+        val csvFiles = inputFolder.listFilesRecursively()
                 .filter { it.extension.toLowerCase() == CSV_EXTENSION }
 
         logger.info("Detected ${csvFiles.size} POI files")

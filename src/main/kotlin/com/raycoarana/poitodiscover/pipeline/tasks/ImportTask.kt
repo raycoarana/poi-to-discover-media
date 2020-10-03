@@ -15,7 +15,7 @@ class ImportTask @Inject constructor(
             val sourceType = getSourceType(it)
             it.decompressTo(inputFolder)
             poiList.addAll(importerFactory.get(sourceType).execute(inputFolder))
-            inputFolder.deleteChilds()
+            inputFolder.deleteChildren()
         }
         context.rawPois = poiList
     }

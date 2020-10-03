@@ -2,7 +2,6 @@ package com.raycoarana.poitodiscover.domain
 
 import com.raycoarana.poitodiscover.core.sha1
 import java.io.*
-import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 import java.io.File as JavaFile
 

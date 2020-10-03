@@ -2,8 +2,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     application
-    kotlin("jvm") version "1.3.50"
-    id("org.jetbrains.kotlin.kapt") version "1.3.50"
+    kotlin("jvm") version "1.4.10"
+    id("org.jetbrains.kotlin.kapt") version "1.4.10"
 }
 
 application {
@@ -11,32 +11,32 @@ application {
 }
 
 group = "com.raycoarana"
-version = "1.3"
+version = "1.4"
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    compile(kotlin("stdlib-jdk8"))
+    implementation(kotlin("stdlib-jdk8"))
 
-    compile("jakarta.xml.bind:jakarta.xml.bind-api:2.3.2")
+    implementation("jakarta.xml.bind:jakarta.xml.bind-api:2.3.2")
 
     //Logs
-    compile("org.slf4j:slf4j-api:1.8.0-beta2")
-    compile("org.slf4j:slf4j-simple:1.8.0-beta2")
+    implementation("org.slf4j:slf4j-api:1.8.0-beta2")
+    implementation("org.slf4j:slf4j-simple:1.8.0-beta2")
 
     //Dagger
-    compile("com.google.dagger:dagger:2.17")
+    implementation("com.google.dagger:dagger:2.17")
     kapt("com.google.dagger:dagger-compiler:2.17")
 
     //CSV
-    compile("com.opencsv:opencsv:4.0")
+    implementation("com.opencsv:opencsv:4.0")
 
     //SQLite
-    compile("org.xerial:sqlite-jdbc:3.23.1")
+    implementation("org.xerial:sqlite-jdbc:3.23.1")
 
-    testCompile("junit:junit:4.12")
+    testImplementation("junit:junit:4.12")
 }
 
 tasks.withType<KotlinCompile> {
@@ -48,5 +48,5 @@ tasks.withType<Jar> {
         attributes["Main-Class"] = application.mainClassName
     }
 
-    from(configurations.runtime.files().map {if (it.isDirectory) it else zipTree(it)})
+    from(configurations.runtime.get().files().map {if (it.isDirectory) it else zipTree(it)})
 }
