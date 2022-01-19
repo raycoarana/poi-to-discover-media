@@ -1,0 +1,46 @@
+name: learn-github-actions
+on:
+  push:
+    branches:
+      - master
+jobs:
+  check-bats-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v2
+        with:
+          distribution: adopt-hotspot
+          java-version: 11
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Run tests
+        run: ./gradlew check
+
+      - name: Bump version
+        uses: Telefonica/git-tag-versioning@2.1
+        id: version-bump
+        env:
+          UPDATE_POM: false
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Assemble
+        if: ${{ steps.version-bump.outputs.part != 'none' }}
+        run: ./gradlew -Pversion=${{ steps.version-bump.outputs.new_tag }} assemble
+
+      - name: Create Github release
+        uses: softprops/action-gh-release@v1
+        id: create_github_release
+        if: ${{ steps.version-bump.outputs.part != 'none' }}
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          generate_release_notes: true
+          target_commitish: ${{ github.sha }}
+          draft: false
+          prerelease: false
+          tag_name: "${{ steps.version-bump.outputs.new_tag }}"
+          name: "${{ steps.version-bump.outputs.new_tag }}"
+          files: |
+            build/distributions/poi-to-discover-media-${{ steps.version-bump.outputs.new_tag }}.zip
