@@ -21,7 +21,7 @@ jobs:
           gradle-version: 6.5.1
 
       - name: Run tests
-        run: ./gradlew check
+        run: gradle check
 
       - name: Bump version
         uses: Telefonica/git-tag-versioning@2.1
@@ -32,7 +32,7 @@ jobs:
 
       - name: Assemble
         if: ${{ steps.version-bump.outputs.part != 'none' }}
-        run: ./gradlew -Pversion=${{ steps.version-bump.outputs.new_tag }} assemble
+        run: gradle -Pversion=${{ steps.version-bump.outputs.new_tag }} assemble
 
       - name: Create Github release
         uses: softprops/action-gh-release@v1
