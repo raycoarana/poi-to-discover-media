@@ -25,7 +25,7 @@ jobs:
 
       - name: Bump version
         id: version-bump
-        uses: hennejg/github-tag-action@v4.1.jh1
+        uses: mathieudutour/github-tag-action@v6.2
         with:
           dry_run: true
           tag_prefix: ""
