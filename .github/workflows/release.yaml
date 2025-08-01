@@ -24,27 +24,29 @@ jobs:
         run: gradle check
 
       - name: Bump version
-        uses: Telefonica/git-tag-versioning@2.1
         id: version-bump
-        env:
-          UPDATE_POM: false
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: hennejg/github-tag-action@v4.1.jh1
+        with:
+          dry_run: true
+          tag_prefix: ""
+          default_bump: minor
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Assemble
-        if: ${{ steps.version-bump.outputs.part != 'none' }}
-        run: gradle -Pversion=${{ steps.version-bump.outputs.new_tag }} assemble
+        if: ${{ steps.version-bump.outputs.new_version }}
+        run: gradle -Pversion=${{ steps.version-bump.outputs.new_version }} assemble
 
       - name: Create Github release
         uses: softprops/action-gh-release@v1
         id: create_github_release
-        if: ${{ steps.version-bump.outputs.part != 'none' }}
+        if: ${{ steps.version-bump.outputs.new_version }}
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           generate_release_notes: true
           target_commitish: ${{ github.sha }}
           draft: false
           prerelease: false
-          tag_name: "${{ steps.version-bump.outputs.new_tag }}"
-          name: "${{ steps.version-bump.outputs.new_tag }}"
+          tag_name: "${{ steps.version-bump.outputs.new_version }}"
+          name: "${{ steps.version-bump.outputs.new_version }}"
           files: |
-            build/distributions/poi-to-discover-media-${{ steps.version-bump.outputs.new_tag }}.zip
+            build/distributions/poi-to-discover-media-${{ steps.version-bump.outputs.new_version }}.zip
