@@ -39,6 +39,4 @@ Also you could just unzip the `Release-XXXX-XX-XX-XXXXXXXX.zip` in the USB/SD de
 
 ## Input formats supported
 
-- GARMIN 2xx-12xx-13xx-14xx-2xxx-3xxx with speed file format from [todo-poi.es](https://www.todo-poi.es/radar/garmin-avisador-radares-gps.php)
-- Mercadona POIs file format from [todo-poi.es](https://www.todo-poi.es/comercio/Mercadona.php)
 - Lupof.net Danger zones Europe CSV from [lupof.net](https://lufop.net/zones-de-danger-france-et-europe-asc-et-csv/)
