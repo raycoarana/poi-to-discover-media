@@ -22,15 +22,11 @@ class ImportTask @Inject constructor(
 
     private fun getSourceType(it: File): SourceType =
         when (it.name) {
-            GARMIN_SOURCE -> SourceType.GARMIN_SPEED
             LUFOP_GARMIN_SOURCE -> SourceType.LUFOP_GARMIN_SOURCE
-            MERCADONA_GARMIN_SOURCE -> SourceType.MERCADONA_GARMIN
-            else -> throw Exception("Unsupported source file")
+            else -> throw Exception("Unsupported source file: ${it.name}. Only LUFOP Garmin EU source is supported.")
         }
 
     companion object {
-        const val GARMIN_SOURCE = "garminvelocidad 2xx-12xx-13xx-14xx-2xxx-3xxx y posteriores.zip"
         const val LUFOP_GARMIN_SOURCE = "Lufop-Zones-de-danger-EU-CSV.zip"
-        const val MERCADONA_GARMIN_SOURCE = "Mercadona.zip"
     }
 }

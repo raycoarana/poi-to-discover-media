@@ -1,5 +1,6 @@
 package com.raycoarana.poitodiscover
 
+import com.raycoarana.poitodiscover.domain.ImportConfig
 import com.raycoarana.poitodiscover.domain.Context
 import com.raycoarana.poitodiscover.pipeline.Pipeline
 import com.raycoarana.poitodiscover.pipeline.TasksProvider
@@ -21,6 +22,7 @@ class MainModule(val context: Context) {
     @Provides fun providePipeline(tasksProvider: TasksProvider, logger: Logger): Pipeline = Pipeline(tasksProvider, context, logger)
     @Provides fun provideLocale(): Locale = context.locale
     @Provides @Named("langs") fun provideLangs(): Array<String> = arrayOf("default", "de_DE", "en_GB", "en_SA", "es_ES", "fr_FR", "it_IT", "nl_NL", "pt_PT", "ru_RU", "pl_PL", "cs_CZ")
+    @Provides fun provideImportConfig(): ImportConfig = context.importConfig
 }
 
 @Component(modules = [MainModule::class])

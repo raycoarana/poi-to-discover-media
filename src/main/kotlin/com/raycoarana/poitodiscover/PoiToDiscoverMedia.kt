@@ -1,5 +1,6 @@
 package com.raycoarana.poitodiscover
 
+import com.raycoarana.poitodiscover.domain.ImportConfig
 import com.raycoarana.poitodiscover.domain.Context
 import com.raycoarana.poitodiscover.domain.Folder
 import com.raycoarana.poitodiscover.domain.PoiType
@@ -12,6 +13,8 @@ const val ARG_DATE = "date"
 const val ARG_HASH_BLOCK_SIZE = "hashBlockSize"
 const val ARG_LANGUAGE = "lang"
 const val ARG_IGNORE_CATEGORIES = "ignore"
+const val ARG_COUNTRY_FILTER = "countryFilter"
+const val ARG_EXCLUDE_COUNTRIES = "excludeCountries"
 
 const val DEFAULT_HASH_BLOCK_SIZE = 524288
 
@@ -21,7 +24,9 @@ val argDefaults = mapOf(
         ARG_DATE to SimpleDateFormat("YYYY-MM-dd").format(Date()),
         ARG_HASH_BLOCK_SIZE to DEFAULT_HASH_BLOCK_SIZE.toString(),
         ARG_LANGUAGE to "es_ES",
-        ARG_IGNORE_CATEGORIES to ""
+        ARG_IGNORE_CATEGORIES to "",
+        ARG_COUNTRY_FILTER to "",
+        ARG_EXCLUDE_COUNTRIES to ""
 )
 
 fun main(args: Array<String>) {
@@ -51,6 +56,17 @@ fun main(args: Array<String>) {
             .filter { validCategories.contains(it) }
             .map { PoiType.valueOf(it) }
 
+    // Parse import configuration from command line arguments
+    val countryFilter = argumentMap[ARG_COUNTRY_FILTER]!!.takeIf { it.isNotBlank() }
+    val excludeCountries = argumentMap[ARG_EXCLUDE_COUNTRIES]!!
+            .split(",")
+            .filter { it.isNotBlank() }
+
+    val importConfig = ImportConfig(
+            countryFilter = countryFilter,
+            excludeCountries = excludeCountries
+    )
+
     val outputFolder = Folder(outputFolderName)
     outputFolder.mkdirs()
     outputFolder.deleteVisibleChildren()
@@ -63,7 +79,8 @@ fun main(args: Array<String>) {
             displayName,
             date,
             hashBlockSize,
-            ignoreCategories
+            ignoreCategories,
+            importConfig
     )
     val mainComponent = DaggerMainComponent.builder()
             .mainModule(MainModule(context))
@@ -84,9 +101,17 @@ fun printHelp() {
     println("\tdate=[dateOfPois]\t(Default: YYYY-MM-DD)")
     println("\thashBlockSize=[sizeOfChecksum]\t(Default: 524288)")
     println("\tignore=[commaSeparatedListOfCategoriesToIgnore]\t(Default: None)\t(Ex: ignore=Hidden,Photo)")
+    println("\tcountryFilter=[countryCode]\t(Default: None)\t(Ex: countryFilter=FR - include only French POIs)")
+    println("\texcludeCountries=[commaSeparatedListOfCountryCodes]\t(Default: None)\t(Ex: excludeCountries=ES,IT)")
     println()
     println("Input files supported:")
-    println("\t- garminvelocidad 2xx-12xx-13xx-14xx-2xxx-3xxx y posteriores.zip")
+    println("\t- Lufop-Zones-de-danger-EU-CSV.zip")
+    println()
+    println("Country filtering examples:")
+    println("\t- Include only French POIs: countryFilter=FR")
+    println("\t- Exclude Spanish POIs: excludeCountries=ES")
+    println("\t- Exclude multiple countries: excludeCountries=ES,IT,DE")
+    println("\t- No filtering (include all): don't specify countryFilter or excludeCountries")
     println()
     println("Categories to use in ignore:")
     println("\t- ResidentialArea")

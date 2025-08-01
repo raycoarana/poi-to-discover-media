@@ -11,7 +11,8 @@ class Context(
         val displayName: String,
         val date: String,
         val hashBlockSize: Int,
-        val ignoreCategories: List<PoiType>
+        val ignoreCategories: List<PoiType>,
+        val importConfig: ImportConfig
 ) {
     val inputFiles = inputFileName.map { File(it) }
     val outputFolder = Folder(outputFolderName)
